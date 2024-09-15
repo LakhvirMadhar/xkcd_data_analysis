@@ -4,16 +4,22 @@
 * Make a chart to show how many comics were published each month
 
 -------WORDS ANALYSIS-------
-* How many total words are there?
+* [DONE] How many total strings are there?
 
-* How many unique words are there?
+* [DONE] How many unique strings are there?
 
-* What's the most common words? Visualize the x most common words.
+* [DONE] What's the longest string to show up in the totality of comics?
+
+* [DONE] What's the longest real word to show up in the totality of comics?
+
+* How many comics has no stings in them?
+
+* Which comic contains the most strings?
+
+
+
+* What's the most common strings? Visualize the x most common words.
   - Why are certain words more common? Exclude them and see your new result.
-
-* What's the longest word to show up in the totality of comics?
-
-* What comic contains the most words?
 
 * What's the average word count? Median?
 
@@ -24,18 +30,18 @@
 
 * Which comic has the most words in all caps?
 
-* How many comics have no words in them?
+
 
 * How many words begin with the letter (insert letter here)?
 
 -------FIELDS-------
-* How many comics have an external link to them?
+* [DONE] How many comics use the links key?
 
-* Is there a single comic where the news label is actually not an empty string? What are they?
+* Of these links, what are the unique domain names? Plot them
 
-* How many comics are there where the alt title matches the actual title?
+* [DONE] How many comics use the news key?
 
-* How many comics are there where the alt title DOES NOT match the actual title?
+* Is there a comic number that skips the sequence? (answer: 404)
 
 * What countries have been mentioned in the comic? How many times?
 
@@ -43,9 +49,10 @@
 
 * Plot these on scattergeo.
 
-* Is there a comic number that skips the sequence? (answer: 404)
+
 """
 from xkcd_catalog_functions import *
+import time
 
 # Load our json file which contains all of our comics
 filename = 'all_xkcd.json'
@@ -145,30 +152,71 @@ print(type(split_words[0]))
 # We store each word in each transcript into a single list, removing the 2D collection to just make one big list
 # We also strip the special characters so that we get a better sense of what words are repeated
 # (ex. 'alt', 'alt]]', and '{{alt' are different words
+
 split_words_in_list = []
-strip_these_characters = '\'.[]"()<>?!@#$%^&*=+-_/{}\\|:;,`~'
+special_characters = '\'.[]"()<>?!@#$%^&*=+-_/{}\\|:;,`~'
 for list_item in split_words:
     for y in list_item:
-        y = y.strip(strip_these_characters)
-        split_words_in_list.append(y)
+        y = y.strip(special_characters)
+        if y.isalpha():
+            split_words_in_list.append(y)
 
 """------WORDS ANALYSIS----"""
-# How many unique words are there?
-# WE NEED TO RUN A DICTIONARY CHECK TO MAKE SURE THESE ARE ACTUAL WORDS
-# We create
-print(len(split_words_in_list))
+
+print("\nHow many total split strings are there?")
+print(f"\tThere are {len(split_words_in_list)} total split strings.")
+
+# Create a set of unique words
 set_split_words_in_list = set(split_words_in_list)
-print(len(set_split_words_in_list))
-print(sorted(set_split_words_in_list))
+print("\nHow many total unique split strings are there?")
+print(f"\tThere are {len(set_split_words_in_list)} total unique strings that are only characters")
 
-# Given the list of unique words, what word is the longest?
-# We need a dictionary api to check if the stored word is actually a word.
-print("\n What's the longest unique word in xkcd comics?")
+
+print("\nWhat's the longest string with only characters?")
 long_word = ''
-for x in set_split_words_in_list:
-    if len(x) > len(long_word):
-        long_word = x
-        print(long_word)
+for word in set_split_words_in_list:
+    if len(word) > len(long_word):
+        long_word = word
+print(f"\tThe string is {long_word}, with a total length of {len(long_word)} characters.")
 
-print(f"The longest word is {long_word}")
-# What are the most populous words?
+print("\nWhat's the longest string with only characters that's actually a real word?")
+long_word = ''
+for word in set_split_words_in_list:
+    if len(word) > len(long_word):
+        time.sleep(0.5)  # Needed b/c otherwise, the API call can't keep up
+        if is_real_word(word):
+            long_word = word
+
+print(f"\tThe word is {long_word}, with a total length of {len(long_word)} characters.")
+
+
+"""-----FIELDS ANALYSIS-----"""
+news_count = 0
+xkcd_news = []
+for dict_item in full_xkcd_repo:
+    if dict_item['news'] != '':
+        xkcd_news.append(dict_item)
+        news_count += 1
+        """
+        print(f"Comic num: {dict_item['num']}")
+        print(f"News: {dict_item['news']}")
+        print(f"Link: https://xkcd.com/{dict_item['num']}\n")"""
+
+print("\nHow many comics use the news key?")
+print(f"\tThere are {news_count} comics where the news key is used in the comic.")
+
+"""Are there any that repeats? What are they?"""
+
+link_count = 0
+xkcd_links = []
+for dict_item in full_xkcd_repo:
+    if dict_item['link'] != '':
+        xkcd_links.append(dict_item)
+        link_count += 1
+
+print("\nHow many comics use the link key?")
+print(f"\tThere are {link_count} comics where the link key is used for the comic.")
+
+
+
+
