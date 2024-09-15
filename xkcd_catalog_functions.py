@@ -17,21 +17,18 @@ TO DO:
    - Link to external site (some have that under their link dict)
    - Link to raw comic
 
-* Get comic by index
+* [DONE] Get comic by index
 
 * Get comic by comic number
 
-*
-
 * [DONE] Create a method to update the json and list for when the comic updates
-
-* Upload code to GitHub
 
 """
 import requests
 import json
 from datetime import datetime
 from pathlib import Path
+
 
 # This is the latest comic
 url = 'https://xkcd.com/info.0.json'
@@ -137,9 +134,9 @@ def get_status_code():
 
 
 # Show the data of the latest comic
-def get_comic_info(xkcd_comic):
+def get_comic_info(xkcd_specific_comic):
     """Show the info of the comic"""
-    for k, v in xkcd_comic.items():
+    for k, v in xkcd_specific_comic.items():
         print(f"{k}: {v}")
 
 
@@ -158,6 +155,7 @@ def change_date_format(xkcd_comic):
 
 
 def does_comic_num_exist(repo_name, comic_num):
+    """Checks to see if the given comic exists"""
     latest_comic_num = get_latest_comic_num()
     for dict_item in repo_name:
         if comic_num == 404:
@@ -171,6 +169,16 @@ def does_comic_num_exist(repo_name, comic_num):
         elif dict_item['num'] == comic_num:
             print(dict_item)
             break
+
+
+def is_real_word(word):
+    """Checks if a word in a comic is part of a dictionary"""
+    dict_url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
+    dict_response = requests.get(dict_url)
+    if dict_response.status_code == 200:
+        return True
+    elif dict_response.status_code == 404:
+        return False
 
 
 # This block of code only executes when this specific file is run
