@@ -95,19 +95,23 @@ def update_xkcd_catalog(all_xkcd_repo):
     Appends the latest comic(s) to our xkcd_list.
     Then overwrites the json file with our appended list.
     """
+    to_pass = all_xkcd_repo[-1]['num']
+    for index in range(to_pass, get_latest_comic_num()+1):
+        if index == to_pass:
+            pass
+        else:
+            # Get the missing comic data
+            json_url = f'https://xkcd.com/{index}/info.0.json'
+            r = requests.get(json_url)
 
-    # Then also run the other checks I might also run, like updating the link
-    for index in range(all_xkcd_repo[-1]['num'], get_latest_comic_num()+1):
-        # Get the missing comic data
-        json_url = f'https://xkcd.com/{index}/info.0.json'
-        r = requests.get(json_url)
-        # Append that to our list
-        comic_info = r.json()
-        all_xkcd_repo.append(comic_info)
-        # Append that to our json
-        with open(filename, 'w') as f:
-            json.dump(all_xkcd_repo, f)
-        print(f"{json_url} successfully added")
+            # Append that to our list
+            comic_info = r.json()
+            all_xkcd_repo.append(comic_info)
+
+            # Append that to our json
+            with open(filename, 'w') as f:
+                json.dump(all_xkcd_repo, f)
+            print(f"{json_url} successfully added")
 
 
 def is_xkcd_updated(all_xkcd_repo):
@@ -133,10 +137,12 @@ def get_status_code():
         print(f"Status Code Issue: {xkcd_response.status_code}")
 
 
-# Show the data of the latest comic
-def get_comic_info(xkcd_specific_comic):
-    """Show the info of the comic"""
-    for k, v in xkcd_specific_comic.items():
+def get_comic_info(all_xkcd_repo,index):
+    """
+    Shows the info of the comic by index
+    NEEDS TO MAKE SURE THAT INDEX ISN'T OUT OF BOUNDS via variant does_comic_num_exist
+    """
+    for k, v in all_xkcd_repo[index].items():
         print(f"{k}: {v}")
 
 
