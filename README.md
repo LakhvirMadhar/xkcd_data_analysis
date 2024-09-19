@@ -19,7 +19,7 @@ The analysis covers:
 
 ## **Output**
 
-The analysis will produce the following output files:
+The analysis produces the following output files:
 
 - `Top 25 Words in XKCD Comics.png` - Bar chart of the top 25 most common words.
 - `Total XKCD Comics Released By Year.png` - Bar chart of comics published each year.
