@@ -1,0 +1,58 @@
+Local json file is all up to date!
+Latest comic on file is comic 2987.
+
+How many total split strings are there?
+	There are 198939 total split strings.
+
+How many total unique split strings are there?
+	There are 16726 total unique strings that are only characters
+
+What's the longest string with only characters?
+	The string is glhdfkuouahuuuuguuuaaauuauuuuuuugggggh, with a total length of 38 characters.
+
+What's the longest string with only characters that's actually a real word?
+	The word is supercalifragilisticexpialidocious, with a total length of 34 characters.
+
+What are top 25 most used words?
+Let's plot the top 25 words!
+
+How many comics have no transcripts to them?
+	There are 1321 comics with no transcripts to them.
+
+How long has the comic been running?
+The first comic was published on 2006-01-01 and the latest comic was published on 2024-09-18.
+The comic has been running for 18 years!
+
+How many comics were made in each year?
+
+Let's plot the amount of comics published each year!
+
+What's the average amount of comics published each year, excluding the current year?
+	The average comics published each year is 150.21 comics.
+
+What's the median number of comics published each year, excluding the current year
+	The median number of comics published each year is 157.0 comics.
+
+Let's create a data structure to store the time gaps between comics!
+	Time Gap Data Structure created!
+
+What's the longest gap time between comics?
+	The largest time gap is 5 days!
+
+What's the average time gap between comics?
+	The average time gap between comics is 2.29!
+
+What's the median time gap between comics?
+	The median time gap between comics is 2 days!
+
+What are the frequencies of the time gaps?
+	Let's plot the frequencies of the time gaps!
+
+How many comics use the news key?
+	There are 55 comics where the news key is used in the comic.
+
+How many comics use the link key?
+	There are 72 comics where the link key is used for the comic.
+
+Comic 404 does not exist. Are there any other comics that don't exist in the sequence?
+	Comic(s) [404] skips the sequence!
