@@ -28,15 +28,13 @@
 
 * [DONE] What's the median amount of comics published each year, excluding the current year?
 
-* What's the longest gap time(s) b/w comics?
+* [DONE] What's the longest gap time(s) b/w comics?
 
-* What's the average gap times b/w comics?
+* [DONE] What's the average gap times b/w comics?
 
-* What's the median gap times b/w comics?
+* [DONE] What's the median gap times b/w comics?
 
-* What's the count of gap time(s)?
-
-* Plot the gap times in descending order.
+* [DONE] Plot the frequencies of the time gap times, in descending order.
 
 
 -------FIELDS-------
@@ -124,12 +122,12 @@ print(f"\tThe string is {long_word}, with a total length of {len(long_word)} cha
 
 print("\nWhat's the longest string with only characters that's actually a real word?")
 long_word = ''
-if input() == 'y':
-    for word in set_split_words_in_list:
-        if len(word) > len(long_word):
-            time.sleep(0.5)  # Needed b/c otherwise, the API call can't keep up
-            if is_real_word(word):
-                long_word = word
+
+for word in set_split_words_in_list:
+    if len(word) > len(long_word):
+        time.sleep(0.5)  # Needed b/c otherwise, the API call can't keep up
+        if is_real_word(word):
+            long_word = word
 
 print(f"\tThe word is {long_word}, with a total length of {len(long_word)} characters.")
 
@@ -143,7 +141,7 @@ for word in split_words_in_list:
 
 sorted_word_count = dict(sorted(word_count.items(), key=lambda item: (item[1], item[0]), reverse=True))
 top_25_words = dict(list(sorted_word_count.items())[:26])
-print(f"The top 25 words are as follows:\n{top_25_words}")
+
 
 print(f"Let's plot the top 25 words!")
 pixels_width = 1920
@@ -180,7 +178,7 @@ for dict_item in full_xkcd_repo:
 print(f"\tThere are {len(empty_comics)} comics with no transcripts to them.")
 
 
-"""-----DATS ANALYSIS-----"""
+"""-----DATES ANALYSIS-----"""
 print("\nHow long has the comic been running?")
 
 start_date = datetime.date(int(full_xkcd_repo[0]['year']),
@@ -204,11 +202,8 @@ for dict_item in full_xkcd_repo:
         comic_years[comic_year] += 1
     else:
         comic_years[comic_year] = 1
-print("The following is how many comics were made each year:")
-for year, amount in comic_years.items():
-    print(f"\tYear {year}: {amount} comics")
 
-print("\nTime to plot the amount of comics published each year!")
+print("\nLet's plot the amount of comics published each year!")
 year_values = list(comic_years.keys())
 total_comics_each_year = list(comic_years.values())
 
@@ -237,42 +232,98 @@ print(f"\tThe average comics published each year is {average:.2f} comics.")
 print("\nWhat's the median number of comics published each year, excluding the current year")
 sorted_yearly_comic_rate = sorted(total_comics_each_year[:-1])
 n = len(sorted_yearly_comic_rate)
-median = 0
+median_yearly_comics = 0
 if n % 2 == 1:
-    median = sorted_yearly_comic_rate[n//2]
+    median_yearly_comics = sorted_yearly_comic_rate[n//2]
 elif n % 2 == 0:
-    median = (sorted_yearly_comic_rate[(n//2)-1] + sorted_yearly_comic_rate[n//2]) / 2
+    median_yearly_comics = (sorted_yearly_comic_rate[(n//2)-1] + sorted_yearly_comic_rate[n//2]) / 2
 
-print(f"\tThe median number of comics published each year is {median} comics.")
+print(f"\tThe median number of comics published each year is {median_yearly_comics} comics.")
 
-print("\nWhat's the longest gap time between comics?")
-comic_years_difference = {}
-# Get the date of the comic
-# Turn the date into a datetime object
-# Store the comic num and date into a dictionary
-
-# Get the difference of element n and element n-1
-# Store the difference, the n-1 date and the nth date into another dictionary
-
+print("\nLet's create a data structure to store the time gaps between comics!")
 # Once that is done, see which is the greatest difference. Make sure to account for ties
 # Based on the results, see if there's some plotting potential, like avg, median, mean of when comics get published
-for dict_item in full_xkcd_repo:
-    comic_year = dict_item['year']
-    if comic_year in comic_years:
-        comic_years[comic_year] += 1
+comic_years_difference = []
+for index in range(0, len(full_xkcd_repo)-1):
+    initial_date = datetime.date(int(full_xkcd_repo[index]['year']),
+                                 int(full_xkcd_repo[index]['month']),
+                                 int(full_xkcd_repo[index]['day']))
+
+    date_after = datetime.date(int(full_xkcd_repo[index+1]['year']),
+                               int(full_xkcd_repo[index+1]['month']),
+                               int(full_xkcd_repo[index+1]['day']))
+
+    difference = date_after - initial_date
+    new_dict = {
+        'comic_range': f"Between comic {full_xkcd_repo[index]['num']} and comic {full_xkcd_repo[index+1]['num']}",
+        'initial_date': initial_date,
+        'date_after': date_after,
+        'difference': difference.days
+    }
+
+    comic_years_difference.append(new_dict)
+
+print("\tTime Gap Data Structure created!")
+
+
+print("\nWhat's the longest gap time between comics?")
+largest_time_gap = 0
+for dict_item in comic_years_difference:
+    if dict_item['difference'] > largest_time_gap:
+        largest_time_gap = dict_item['difference']
+
+print(f"\tThe largest time gap is {largest_time_gap} days!")
+
+print("\nWhat's the average time gap between comics?")
+time_gaps = []
+for dict_item in comic_years_difference:
+    time_gaps.append(dict_item['difference'])
+
+average_time_gap = sum(time_gaps)/len(time_gaps)
+
+print(f"\tThe average time gap between comics is {average_time_gap:.2f}!")
+
+
+print("\nWhat's the median time gap between comics?")
+sorted_time_gaps = sorted(time_gaps)
+n = len(sorted_time_gaps)
+median_time_gap = 0
+if n % 2 == 1:
+    median_time_gap = sorted_time_gaps[n//2]
+elif n % 2 == 0:
+    median_time_gap = (sorted_time_gaps[(n//2)-1] + sorted_time_gaps[n//2]) / 2
+
+print(f"\tThe median time gap between comics is {median_time_gap} days!")
+
+print("\nWhat are the frequencies of the time gaps?")
+time_gap_frequency = {}
+for days in time_gaps:
+    time_gap = days
+    if time_gap in time_gap_frequency:
+        time_gap_frequency[time_gap] += 1
     else:
-        comic_years[comic_year] = 1
-print("The following is how many comics were made each year:")
-for year, amount in comic_years.items():
-    print(f"\tYear {year}: {amount} comics")
+        time_gap_frequency[time_gap] = 1
 
+print("\tLet's plot the frequencies of the time gaps!")
 
+fig_03 = plt.figure()
+fig_03.set_size_inches(fig_size)
 
+x_xkcd_days = list(time_gap_frequency.keys())
+y_xkcd_frequency = list(time_gap_frequency.values())
 
+plt.bar(x_xkcd_days, y_xkcd_frequency)
 
+plt.title("XKCD Time Gap Frequencies", fontsize=24, pad=20, fontweight='bold')
+plt.xlabel("Days Before Next Comic", fontsize=18, labelpad=20, fontweight='bold')
+plt.xticks(fontsize=16)
+plt.ylabel("Frequency", fontsize=18, labelpad=20, fontweight='bold')
+plt.yticks(fontsize=16)
 
+for x_xkcd_days, y_xkcd_frequency in zip(x_xkcd_days, y_xkcd_frequency):
+    plt.text(x_xkcd_days, y_xkcd_frequency+15, str(y_xkcd_frequency), ha='center', va='bottom', fontsize=16)
 
-
+plt.savefig("XKCD Time Gap Frequencies Jan 1, 2006 - September 19, 2024.png")
 
 """-----FIELDS ANALYSIS-----"""
 print("\nHow many comics use the news key?")

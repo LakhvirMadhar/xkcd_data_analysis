@@ -9,17 +9,7 @@ TO DO:
 
 * [DONE] Print an un-formatted name for a given comic
 
-* Print a formatted name for a given comic:
-   - Comic Title:
-   - Published date (Y-M-D):
-   - Description:
-      Make sure alt:title/ alt is excluded
-   - Link to external site (some have that under their link dict)
-   - Link to raw comic
-
 * [DONE] Get comic by index
-
-* Get comic by comic number
 
 * [DONE] Create a method to update the json and list for when the comic updates
 
@@ -115,7 +105,7 @@ def update_xkcd_catalog(all_xkcd_repo):
 
 
 def is_xkcd_updated(all_xkcd_repo):
-    """Checks to see if there's an added comic to xkcd"""
+    """Checks to see if there's a new xkcd comic and updates files accordingly"""
     latest_comic_num = get_latest_comic_num()
     if all_xkcd_repo[-1]['num'] < latest_comic_num:
         print(f"Current comic num in list is: {all_xkcd_repo[-1]['num']}.")
@@ -131,6 +121,7 @@ def is_xkcd_updated(all_xkcd_repo):
 
 
 def get_status_code():
+    """Returns a status code for the xkcd api"""
     if xkcd_response.status_code == 200:
         print("Connection Successful")
     else:
