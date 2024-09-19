@@ -28,5 +28,5 @@ The analysis produces the following output files:
 
 ## **Acknowledgements**
 
-- [XKCD](https://xkcd.com/info.0.json) - For providing the dataset.
+- [XKCD](https://xkcd.com/info.0.json) - For providing the API to their comics.
 - [Matplotlib](https://matplotlib.org/) - For the plotting library used in visualizations.
