@@ -11,7 +11,7 @@ The analysis covers:
 - **Time Gap Analysis:** Analyzes gaps between comic releases, including the longest gap, average gap, and median gap, with visualizations of time gap frequencies.
 - **Field Analysis:** Counts occurrences of specific fields in the dataset, such as the use of links and news keys, and identifies any missing comics.
 
-## **Features**
+## **Charts**
 
 - **Word Frequency Visualization:** Bar chart of the top 25 most common words in XKCD comics.
 - **Yearly Publication Trends:** Bar chart showing the number of comics published each year.
