@@ -212,7 +212,8 @@ fig_02.set_size_inches(fig_size)
 
 plt.bar(year_values, total_comics_each_year)
 
-plt.title("XKCD Comics Released By Year", fontsize=24, pad=20, fontweight='bold')
+current_year = datetime.datetime.today().date().year
+plt.title(f"XKCD Comics Released Each Year, From 2006 to {current_year}", fontsize=24, pad=20, fontweight='bold')
 plt.xlabel("Year", fontsize=18, labelpad=20, fontweight='bold')
 plt.xticks(fontsize=16)
 plt.ylabel("Amount", fontsize=18, labelpad=20, fontweight='bold')
@@ -313,8 +314,8 @@ x_xkcd_days = list(time_gap_frequency.keys())
 y_xkcd_frequency = list(time_gap_frequency.values())
 
 plt.bar(x_xkcd_days, y_xkcd_frequency)
-
-plt.title("XKCD Time Gap Frequencies", fontsize=24, pad=20, fontweight='bold')
+today = datetime.datetime.today().date()
+plt.title(f"XKCD Time Gap Frequencies 2006-1-1 to {today}", fontsize=24, pad=20, fontweight='bold')
 plt.xlabel("Days Before Next Comic", fontsize=18, labelpad=20, fontweight='bold')
 plt.xticks(fontsize=16)
 plt.ylabel("Frequency", fontsize=18, labelpad=20, fontweight='bold')
